@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: factu_cloud
+      POSTGRES_USER: fran
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+
+volumes:
+  postgres_data:

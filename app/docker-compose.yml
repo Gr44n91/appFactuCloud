@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: factu_cloud
+      POSTGRES_USER: fran
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./db/data/data.sql:/docker-entrypoint-initdb.d/data.sql
+
+  facturacion:
+    build: .
+    restart: always
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/factu_cloud
+      DB_USERNAME: fran
+      DB_PASSWORD: 123456
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
