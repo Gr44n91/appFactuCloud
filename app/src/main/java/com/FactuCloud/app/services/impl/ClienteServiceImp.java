@@ -5,6 +5,7 @@ import com.FactuCloud.app.dao.repository.IClienteRepository;
 import com.FactuCloud.app.dao.repository.IUsuarioRespository;
 import com.FactuCloud.app.dto.request.ClienteRq;
 import com.FactuCloud.app.dto.response.ClienteRs;
+import com.FactuCloud.app.exceptions.BadRequestException;
 import com.FactuCloud.app.exceptions.ResourceNotFoundException;
 import com.FactuCloud.app.services.ClienteService;
 import jakarta.transaction.Transactional;
@@ -77,7 +78,10 @@ public class ClienteServiceImp implements ClienteService {
 
         //Comprobamos que el cliente pertenece al Usuario
         if(cliente.getUsuario().getCif().equalsIgnoreCase(cifDniUsuario)){
+            System.out.println("Eliminar el cliente");
             clienteRepository.deleteById(cliente.getClienteId());
+        }else{
+            throw new BadRequestException("El cliente no se corresponde con ese usuario");
         }
     }
 
